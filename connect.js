@@ -22,6 +22,8 @@ module.exports = {
   }
 }
 
+console.log('running from connect.js');
+
 // async function run() {
 //   try {
 //     // Connect the client to the server	(optional starting in v4.7)
