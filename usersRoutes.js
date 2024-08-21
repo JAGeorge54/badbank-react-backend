@@ -43,6 +43,22 @@ usersRoutes.route("/users").post(async (req, res) => {
 })
 
 //#4 Update One
+usersRoutes.route("/users/:id").put(async (req, res) => {
+    let db = database.getDb();
+    let mongoObject = {
+        $set: {
+            name: req.body.name,
+            email: req.body.email,
+            password: req.body.password,
+            balance: req.body.balance,
+            admin: req.body.admin,
+            history: [100]
+        }
+    };
+    let data = await db.collection("users").updateOne({_id: new ObjectId(req.params.id)}, mongoObject);
+    res.json(data);
+})
+
 //#5 Delete One
 
 
