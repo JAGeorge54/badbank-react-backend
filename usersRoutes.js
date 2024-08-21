@@ -26,7 +26,22 @@ usersRoutes.route("/users/:id").get(async (req, res) => {
         throw new Error("Data was not found :(")
     }
 })
+
 //#3 Create One
+usersRoutes.route("/users").post(async (req, res) => {
+    let db = database.getDb();
+    let mongoObject = {
+        name: req.body.name,
+        email: req.body.email,
+        password: req.body.password,
+        balance: req.body.balance,
+        admin: req.body.admin,
+        history: [100]
+    };
+    let data = await db.collection("users").insertOne(mongoObject);
+    res.json(data);
+})
+
 //#4 Update One
 //#5 Delete One
 
