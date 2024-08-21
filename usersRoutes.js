@@ -60,6 +60,11 @@ usersRoutes.route("/users/:id").put(async (req, res) => {
 })
 
 //#5 Delete One
+usersRoutes.route("/users/:id").delete(async (req, res) => {
+    let db = database.getDb();
+    let data = await db.collection("users").deleteOne({_id: new ObjectId(req.params.id)});
+    res.json(data);
+})
 
 
 module.exports = usersRoutes;
