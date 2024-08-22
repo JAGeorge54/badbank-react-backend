@@ -36,7 +36,7 @@ usersRoutes.route("/users").post(async (req, res) => {
         password: req.body.password,
         balance: req.body.balance,
         admin: req.body.admin,
-        history: [100]
+        history: [req.body.balance]
     };
     let data = await db.collection("users").insertOne(mongoObject);
     res.json(data);
