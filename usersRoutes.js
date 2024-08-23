@@ -33,7 +33,7 @@ usersRoutes.route("/users/:id").get(async (req, res) => {
 usersRoutes.route("/users").post(async (req, res) => {
     let db = database.getDb();
 
-    const emailTaken = db.collection("users").findOne({email: req.body.email});
+    const emailTaken = await db.collection("users").findOne({email: req.body.email});
 
     if (emailTaken) {
         res.json({message: 'Email not available.'});
