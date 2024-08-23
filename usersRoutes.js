@@ -33,18 +33,25 @@ usersRoutes.route("/users/:id").get(async (req, res) => {
 usersRoutes.route("/users").post(async (req, res) => {
     let db = database.getDb();
 
-    const hash = await bcrypt.hash(req.body.password, SALT_ROUNDS)
+    const emailTaken = db.collection("users").findOne({email: req.body.email});
 
-    let mongoObject = {
-        name: req.body.name,
-        email: req.body.email,
-        password: hash,
-        balance: req.body.balance,
-        admin: req.body.admin,
-        history: [req.body.balance]
-    };
-    let data = await db.collection("users").insertOne(mongoObject);
-    res.json(data);
+    if (emailTaken) {
+        res.json({message: 'Email not available.'});
+    } else {
+        const hash = await bcrypt.hash(req.body.password, SALT_ROUNDS)
+    
+        let mongoObject = {
+            name: req.body.name,
+            email: req.body.email,
+            password: hash,
+            balance: req.body.balance,
+            admin: req.body.admin,
+            history: [req.body.balance]
+        };
+        let data = await db.collection("users").insertOne(mongoObject);
+        res.json(data);
+    }
+
 })
 
 //#4 Update One
