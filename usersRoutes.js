@@ -1,8 +1,10 @@
 const express = require("express");
 const database = require("./connect");
 const ObjectId = require("mongodb").ObjectId;
+const bcrypt = require('bcrypt');
 
 let usersRoutes = express.Router();
+const SALT_ROUNDS = 6;
 
 // #1 Retrieve All
 // http://localhost:3000/users
@@ -30,10 +32,13 @@ usersRoutes.route("/users/:id").get(async (req, res) => {
 //#3 Create One
 usersRoutes.route("/users").post(async (req, res) => {
     let db = database.getDb();
+
+    const hash = await bcrypt.hash(req.body.password, SALT_ROUNDS)
+
     let mongoObject = {
         name: req.body.name,
         email: req.body.email,
-        password: req.body.password,
+        password: hash,
         balance: req.body.balance,
         admin: req.body.admin,
         history: [req.body.balance]
@@ -52,7 +57,7 @@ usersRoutes.route("/users/:id").put(async (req, res) => {
             password: req.body.password,
             balance: req.body.balance,
             admin: req.body.admin,
-            history: [100]
+            history: [req.body.balance]
         }
     };
     let data = await db.collection("users").updateOne({_id: new ObjectId(req.params.id)}, mongoObject);
