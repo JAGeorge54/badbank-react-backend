@@ -10,7 +10,7 @@ const SALT_ROUNDS = 6;
 
 // #1 Retrieve All
 // http://localhost:3000/users
-usersRoutes.route("/users").get(verifyToken, async (req, res) => {
+usersRoutes.route("/users").get(async (req, res) => {
     let db = database.getDb();
     let data = await db.collection("users").find({}).toArray();
     if (data.length > 0) {
@@ -21,7 +21,7 @@ usersRoutes.route("/users").get(verifyToken, async (req, res) => {
 })
 
 //#2 Retrieve One
-usersRoutes.route("/users/:id").get(verifyToken, async (req, res) => {
+usersRoutes.route("/users/:id").get(async (req, res) => {
     let db = database.getDb();
     let data = await db.collection("users").findOne({_id: new ObjectId(req.params.id)});
     if (Object.keys(data).length > 0) {
@@ -99,19 +99,19 @@ usersRoutes.route("/users/login").post(async (req, res) => {
 
 })
 
-function verifyToken(request, response, next) {
-    const authHeaders = request.headers["authorization"];
+function verifyToken(req, res, next) {
+    const authHeaders = req.headers["authorization"];
     const token = authHeaders && authHeaders.split(' ')[1];
     if (!token) {
-        return response.status(401).json({message: "Authentication token is missing."});
+        return res.status(401).json({message: "Authentication token is missing."});
     }
 
     jwt.verify(token, process.env.SECRETKEY, (error, user) => {
         if (error) {
-            return response.status(403).json({message: "Invalid Token."})
+            return res.status(403).json({message: "Invalid Token."})
         }
 
-        request.body.user = user;
+        req.body.user = user;
         next()
     })
 }
