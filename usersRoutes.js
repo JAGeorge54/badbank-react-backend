@@ -57,7 +57,7 @@ usersRoutes.route("/users").post(verifyToken, async (req, res) => {
 })
 
 //#4 Update One
-usersRoutes.route("/users/:id").put(verifyToken, async (req, res) => {
+usersRoutes.route("/users/:id").put(async (req, res) => {
     let db = database.getDb();
     let mongoObject = {
         $set: {
