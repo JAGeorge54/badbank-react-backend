@@ -32,7 +32,7 @@ usersRoutes.route("/users/:id").get(async (req, res) => {
 })
 
 //#3 Create One
-usersRoutes.route("/users").post(verifyToken, async (req, res) => {
+usersRoutes.route("/users").post(async (req, res) => {
     let db = database.getDb();
 
     const emailTaken = await db.collection("users").findOne({email: req.body.email});
