@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 app.use(users);
 
-app.listen(3000 || process.env.PORT, () => {
+app.listen(process.env.PORT || 3000, () => {
     connect.connectToServer()
     console.log(`Server is running on port: ${process.env.PORT}`)
 })
