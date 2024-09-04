@@ -66,7 +66,7 @@ usersRoutes.route("/users/:id").put(async (req, res) => {
             password: req.body.password,
             balance: req.body.balance,
             admin: req.body.admin,
-            history: [req.body.balance]
+            history: req.body.history
         }
     };
     let data = await db.collection("users").updateOne({_id: new ObjectId(req.params.id)}, mongoObject);
